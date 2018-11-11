@@ -1,16 +1,41 @@
-#Distance Ruler vert 2 vert tool
-Place for my Py code for Maya
-
 import maya.cmds as cmds
+import pymel.core as pm
 
 #grabbing vertex number and object name
-mySelection=cmds.ls (selection = True)
+mySelection=pm.ls(selection = True)
 print mySelection
+print mySelection[0]
+#if mySelection[0] is not type('MeshVertex') or mySelection > 2 or mySelection < 2:
+#    pm.error("Invalid selection. Select two vertices")
+if len(mySelection[0]) > 1:
+    mySelection = mySelection[0]
+    
 
-#Grabbing vertex position on cube, need to grab it from worl :/
-mySelPosition=cmds.xform(mySelection,q=True,t=True)
-print mySelPosition
-#Will build the dimension ruler from vertext to vertex, uses distance to measure
-build = cmds.distanceDimension(sp=(mySelPosition), ep=mySelPosition)
+my_list = []
 
+for Vertex in mySelection:
+
+    #Grabbing vertex position on cube, need to grab it from world :/
+    mySelPosition=pm.xform(Vertex,q=True,t=True, ws=True)
+    print mySelPosition
+    
+    
+    my_list.append (mySelPosition)
+    
+    print(my_list)
+    
+
+pos1 = my_list[0]
+pos2 = my_list[1]
+
+#Will build the dimension ruler from vertex to vertex, uses distance to measure
+myRuler = pm.distanceDimension( sp=(pos1), ep=(pos2))
+print pm.listConnections(myRuler)
+
+MyLocators = pm.listConnections(myRuler)
+
+
+
+list = [1,2]
+print len(list)
 
